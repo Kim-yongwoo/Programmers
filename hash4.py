@@ -7,4 +7,4 @@ def solution(genres, plays):
     for g in genreSort:
         temp = [e[1] for e in sorted(d[g],key= lambda x: (x[0], -x[1]), reverse = True)]
         answer += temp[:min(len(temp),2)]
-    return answer //
+    return answer
