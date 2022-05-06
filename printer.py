@@ -1,19 +1,40 @@
-from collection import deque
+from collections import deque
 
-# 데큐 데이터 생성하기
-myDeque = deque([(1, "첫번쨰"), (2, "두번째"), (3, "세번째"), (4, "네번째"), (5, "다섯번째")])
 
-#출력
-print("전체 데큐 : ", myDeque)
+def solution(priorities, location):
+    answer = 0
 
-# 왼쪽 내용 가져오기, 가져오면 삭제됨
-firstData = myDeque.popleft()
+    # deque 구조만들기
+    # 키 : [2,1,3,2,]값으로 설정 / 값 : location과 매칭할 인덱스
+    # myDeque 변수 값 : deque([(2,0),(1,1),(3,2),(2,3)])
+    myDeque = deque([(v, i) for i, v in enumerate(priorities)])
 
-# 삭제한 데이터
-print("왼쪽 첫번째 데이터 : ", firstData)
+    # print(myDeque)
 
-print("현재 데큐 : ", myDeque)
+    idx = 0
+    while myDeque:
 
-# 방금 가져온 첫번째 데이터를 추가하기
-myDeque.append(firstData)
-print("현재 데큐 : ", myDeque)
+        idx += 1
+        # 첫번째 값 가져오고, myDeque에서 삭제하기
+        firstData = myDeque.popleft()
+
+        # myDeque 데이터가 존재하고, 우선 가장 높은 데이터가 가져온 데이터보다 크다면,
+        if myDeque and max(myDeque)[0] > firstData[0]:
+
+            # 가져온 데이터를 뒤에 추가하기
+            # myDeque 변수 값 : deque([(3,2),(2,3),(2,0),(1,1)])
+            myDeque.append(firstData)
+            # print(myDeque)
+
+        else:  # 우선순위 가장 높은 것을 찾은 상태에서 location에 해당되는 값 찾기
+            # 우선순위 높은 것 찾으면,
+            # 더이상 가져오고, 추가하기 안함
+            # 멈춘 상태 : deque([(2,3),(2,0),(1,1)])
+
+            # 대기열 값 구하기
+            answer += 1
+
+            # 문서 찾으면, 더이상 반복하지 않기
+            if location == firstData[1]:
+                break
+    return answer
